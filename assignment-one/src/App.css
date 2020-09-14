@@ -1,0 +1,18 @@
+.App {
+  width: 500px;
+  border: 3px solid rgb(245, 109, 109);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  text-align: center;
+}
+button {
+  background-color: rgb(245, 109, 109);
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+button:hover {
+  background-color: rgb(0, 173, 0);
+}
