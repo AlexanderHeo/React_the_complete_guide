@@ -4,8 +4,8 @@
   "description": "React Starter App - setup with webpack and babel",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch"
+    "build": "webpack --mode=production",
+    "watch": "webpack --mode=development --watch"
   },
   "repository": {
     "type": "git",

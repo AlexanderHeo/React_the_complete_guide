@@ -92,12 +92,15 @@ class App extends Component {
       personsList = (
         <div>
           {this.state.persons.map((person) => {
-            return <Person
+            return (
+              <Person
                 click={() => this.handleDeletePerson(person.id)}
                 name={person.name}
                 age={person.age}
                 key={person.id}
-                change={(event) => this.nameChanger(event, person.id)} />
+                change={(event) => this.nameChanger(event, person.id)}
+              />
+            );
           })}
         </div>
       );
