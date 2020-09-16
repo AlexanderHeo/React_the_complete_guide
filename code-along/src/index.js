@@ -4,7 +4,7 @@ import App from './components/App';
 
 class ReactApp extends Component {
   render() {
-    return <App />
+    return <App appTitle="Person Manager" />
   }
 }
 
