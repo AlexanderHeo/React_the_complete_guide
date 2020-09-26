@@ -1,0 +1,7 @@
+**/node_modules/
+.DS_Store
+.vscode/
+**/dist/*.js*
+**/server/public/*.js*
+debug.log
+**/src/components/debug.log
