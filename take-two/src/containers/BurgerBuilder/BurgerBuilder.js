@@ -92,6 +92,21 @@ class BurgerBuilder extends Component {
     });
   }
 
+  handlePurchaseContinue = () => {
+    alert('You just bought a burger!');
+    this.setState({
+      ingredients: {
+        salad: 0,
+        bacon: 0,
+        cheese: 0,
+        meat: 0
+      },
+      totalPrice: 4,
+      purchaseable: false,
+      purchasing: false
+    });
+  }
+
   render() {
     const disabledInfo = {...this.state.ingredients};
     for (let key in disabledInfo) {
@@ -103,7 +118,11 @@ class BurgerBuilder extends Component {
           show={this.state.purchasing}
           modalClosed={this.handlePurchaseCancel}
         >
-          <OrderSummary ingredients={this.state.ingredients}/>
+          <OrderSummary
+            ingredients={this.state.ingredients}
+            purchaseCancelled={this.handlePurchaseCancel}
+            purchaseContinued={this.handlePurchaseContinue}
+          />
         </Modal>
         <Burger ingredients={this.state.ingredients}/>
         <BuildControls
