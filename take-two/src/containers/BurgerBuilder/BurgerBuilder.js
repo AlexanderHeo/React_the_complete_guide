@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Burger from '../../components/Burger/Burger';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import Modal from '../../components/UI/Modal/Modal';
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -18,13 +20,16 @@ class BurgerBuilder extends Component {
       meat: 0
     },
     totalPrice: 4,
-    purchaseable: false
+    purchaseable: false,
+    purchasing: false
   }
 
   updatePurchaseState = (ingredients) => {
-    // because setState is asynchronous, do not use the following
-    // method to get current state of ingredients
+    // because setState is asynchronous, do not use state
+    // instead, pass updated current state of ingredients
+    // from handleAddIngredients/handleRemoveIngredients methods
     // const ingredients = {...this.state.ingredients};
+
     const sum = Object.keys(ingredients)
       .map(ingredientKey => {
         return ingredients[ingredientKey]
@@ -32,7 +37,6 @@ class BurgerBuilder extends Component {
       .reduce((a, b) => {
           return a + b
         }, 0);
-      console.log(sum)
     this.setState({
       purchaseable: sum > 0
     });
@@ -76,20 +80,29 @@ class BurgerBuilder extends Component {
     this.updatePurchaseState(updatedIngredients);
   }
 
+  handlePurchase = () => {
+    this.setState({
+      purchasing: true
+    });
+  }
+
   render() {
     const disabledInfo = {...this.state.ingredients};
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0
     };
-    console.log('purchaseable', this.state.purchaseable)
     return (
       <>
+        <Modal show={this.state.purchasing}>
+          <OrderSummary ingredients={this.state.ingredients}/>
+        </Modal>
         <Burger ingredients={this.state.ingredients}/>
         <BuildControls
           ingredientAdded={this.handleAddIngredients}
           ingredientRemoved={this.handleRemoveIngredients}
           disabled={disabledInfo}
           purchaseable={this.state.purchaseable}
+          ordered={this.handlePurchase}
           price={this.state.totalPrice}
         />
       </>
