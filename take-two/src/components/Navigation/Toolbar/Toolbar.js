@@ -1,5 +1,6 @@
 import React from 'react';
 import Logo from '../../Logo/Logo';
+import NavigationItems from '../NavigationItems/NavigationItems';
 import classes from './Toolbar.css';
 
 const toolbar = (props) => (
@@ -7,9 +8,7 @@ const toolbar = (props) => (
     <div>Hamburger Menu</div>
     <Logo />
     <nav>
-      <ul>
-        links
-      </ul>
+      <NavigationItems />
     </nav>
   </header>
 );
