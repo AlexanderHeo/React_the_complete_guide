@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, NavLink, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, NavLink, Redirect, Route, Switch } from 'react-router-dom';
 import Courses from './containers/Courses/Courses';
 import Users from './containers/Users/Users';
+
+const ulStyle = {
+  width: '100%',
+  display: 'flex',
+  listStyle: 'none'
+}
+const liStyle = {
+  margin: "0 auto",
+  padding: "16px",
+};
 
 class App extends Component {
   render () {
@@ -10,27 +20,41 @@ class App extends Component {
         <div className="App">
           <header>
             <nav>
-              <ul>
-                <li>
+              <ul style={ulStyle}>
+                <li style={liStyle}>
                   <NavLink
                     to="/courses/"
-                    exact>Courses</NavLink>
+                    exact
+                    activeStyle={{
+                      textDecoration: "underline",
+                      color: "orange",
+                    }}
+                  >
+                    Courses
+                  </NavLink>
                 </li>
-                <li>
+                <li style={liStyle}>
                   <NavLink
                     to="/users/"
-                    exact>Users</NavLink>
+                    exact
+                    activeStyle={{
+                      textDecoration: "underline",
+                      color: "orange",
+                    }}
+                  >
+                    Users
+                  </NavLink>
                 </li>
               </ul>
             </nav>
           </header>
           <Switch>
-            <Route path='/courses' component={Courses} />
-            <Route path='/users' component={Users} />
+            <Route path="/courses" component={Courses} />
+            <Route path="/users" component={Users} />
+            <Redirect from="/all-courses" to="/courses" />
           </Switch>
         </div>
       </Router>
-
     );
   }
 }
