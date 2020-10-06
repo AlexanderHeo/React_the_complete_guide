@@ -18,14 +18,13 @@ class BurgerBuilder extends Component {
   state = {
     ingredients: null,
     totalPrice: 4,
-    purchaseable: false,
+    purchaseable: true,
     purchasing: false,
     loading: false,
     error: false
   };
 
   componentDidMount () {
-
     axios.get('https://react-my-burger-3ea54.firebaseio.com/ingredients.json')
       .then(response => {
         this.setState({
@@ -98,38 +97,18 @@ class BurgerBuilder extends Component {
   };
 
   handlePurchaseContinue = () => {
-    // alert('You made a purchase!');
-    this.setState({
-      loading: true
+    const queryParams = [];
+    for(let i in this.state.ingredients) {
+      queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+    }
+    queryParams.push('price=' + this.state.totalPrice);
+    const queryString = queryParams.join('&');
+    // console.log('queryParams:', queryParams)
+    // console.log('queryString:', queryString)
+    this.props.history.push({
+      pathname: '/checkout',
+      search: '?' + queryString
     });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Alex',
-        address: {
-          street: 'Fulcrum Ave',
-          zipCode: '66',
-          city: 'Rebel City'
-        },
-        email: 'fulcrum@rebel.com'
-      },
-      deliveryMethod: 'Uber Eats'
-    };
-
-    axios.post('/orders.json', order)
-      .then(response => {
-        this.setState({
-          loading: false,
-          purchasing: false
-        })
-      })
-      .catch(error => {
-        this.setState({
-          loading: false,
-          purchasing: false
-        })
-      });
   }
 
   componentWillUnmount () {
