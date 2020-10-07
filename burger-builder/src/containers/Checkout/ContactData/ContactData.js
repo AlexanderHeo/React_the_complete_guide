@@ -1,99 +1,151 @@
 import React, { Component } from 'react';
 import axios from '../../../axios-order';
 import Button from '../../../components/UI/Button/Button';
+import Input from '../../../components/UI/Input/Input';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './ContactData.css';
 
 class ContactData extends Component {
-    state = {
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            city: '',
-            postalCode: ''
+  state = {
+    orderForm: {
+      name: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Name",
         },
-        loading: false
-    }
-
-    handleOrder = (e) => {
-      e.preventDefault();
-      // console.log(this.props.ingredients);
-      //   alert('You made a purchase!');
-      this.setState({loading: true});
-      const order = {
-        ingredients: this.props.ingredients,
-        price: this.props.price,
-        customer: {
-          name: 'Alex',
-          address: {
-            street: 'Fulcrum Ave',
-            zipCode: '66',
-            city: 'Rebel City'
-          },
-          email: 'fulcrum@rebel.com'
+        label: "Name",
+        value: "",
+      },
+      street: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Address",
         },
-        deliveryMethod: 'Uber Eats'
-      };
+        label: "Address",
+        value: "",
+      },
+      zipCode: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Zip Code",
+        },
+        label: "Zip Code",
+        value: "",
+      },
+      city: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "City",
+        },
+        label: "City",
+        value: "",
+      },
+      email: {
+        elementType: "input",
+        elementConfig: {
+          type: "email",
+          placeholder: "Email",
+        },
+        label: "Email",
+        value: "",
+      },
+      deliveryMethod: {
+        elementType: "select",
+        elementConfig: {
+          options: [
+            {
+              value: "DEFAULT",
+              displayValue: "Choose a delivery option:"
+            },
+            { value: "fastest", displayValue: "Fastest" },
+            { value: "cheapest", displayValue: "Cheapest" },
+          ],
+					defaultValue: "DEFAULT",
+        },
+        label: "Delivery Method",
+        value: "",
+      },
+    },
+    loading: false,
+  };
 
-      axios.post('/orders.json', order)
-        .then(response => {
-          this.setState({ loading: false });
-          this.props.history.push('/');
-        })
-        .catch(error => {
-          this.setState({ loading: false })
-        });
+  handleOrder = (e) => {
+    e.preventDefault();
+    // console.log(this.props.ingredients);
+    //   alert('You made a purchase!');
+    this.setState({ loading: true });
+    const formData = {};
+    for (let formElementIdentifier in this.state.orderForm) {
+      formData[formElementIdentifier] = this.state.orderForm[
+        formElementIdentifier
+      ].value;
     }
 
-    render() {
-      let form = (
-        <form>
-          <input
-            className={classes.Input}
-            type="text"
-            name="name"
-            placeholder="your name"
-          />
-          <input
-            className={classes.Input}
-            type="text"
-            name="email"
-            placeholder="your email"
-          />
-          <input
-            className={classes.Input}
-            type="text"
-            name="street"
-            placeholder="your street"
-          />
-          <input
-            className={classes.Input}
-            type="text"
-            name="city"
-            placeholder="your city"
-          />
-          <input
-            className={classes.Input}
-            type="text"
-            name="postalCode"
-            placeholder="your zip code"
-          />
-          <Button btnType="Success" clicked={this.handleOrder}>
-            ORDER
-          </Button>
-        </form>
-      );
-      if (this.state.loading) {
-        form = <Spinner />
-      }
-        return(
-            <div className={classes.ContactData}>
-                <h4>Enter your Contact Data:</h4>
-                {form}
-            </div>
-        );
+    const order = {
+      ingredients: this.props.ingredients,
+      price: this.props.price,
+      orderData: formData,
+    };
+
+    axios
+      .post("/orders.json", order)
+      .then((response) => {
+        this.setState({ loading: false });
+        this.props.history.push("/");
+      })
+      .catch((error) => {
+        this.setState({ loading: false });
+      });
+  };
+
+  handleInputChange = (event, inputIdentifier) => {
+    const updatedOrderForm = { ...this.state.orderForm };
+    const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
+    updatedFormElement.value = event.target.value;
+    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    this.setState({ orderForm: updatedOrderForm });
+  };
+
+  render() {
+    const formElementArray = [];
+    for (let key in this.state.orderForm) {
+      formElementArray.push({
+        id: key,
+        config: this.state.orderForm[key],
+      });
     }
+    let form = (
+      <form onSubmit={this.handleOrder}>
+        {formElementArray.map((formElement) => (
+          <Input
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+            label={formElement.config.label}
+            changed={(event) => this.handleInputChange(event, formElement.id)}
+          />
+        ))}
+
+        <Button btnType="Success" clicked={this.handleOrder}>
+          ORDER
+        </Button>
+      </form>
+    );
+    if (this.state.loading) {
+      form = <Spinner />;
+    }
+    return (
+      <div className={classes.ContactData}>
+        <h4>Enter your Contact Data:</h4>
+        {form}
+      </div>
+    );
+  }
 }
 
 export default ContactData;
