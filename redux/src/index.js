@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
 import App from './App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import reducer from './store/reducer';
+import counterReducer from './store/reducers/counter';
+import resultReducer from './store/reducers/result';
 
+const reducer = combineReducers({
+	counter: counterReducer,
+	result: resultReducer
+})
 const store = createStore(reducer);
 
 ReactDOM.render(
