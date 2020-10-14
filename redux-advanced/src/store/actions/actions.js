@@ -28,10 +28,18 @@ export const subtract = (value) => {
 		val: value
 	}
 }
-export const storeResult = (result) => {
+const saveResult = (result) => {
 	return {
 		type: STORE_RESULT,
 		result: result
+	}
+}
+export const storeResult = (result) => {
+	return dispatch => {
+		setTimeout(() => {
+			// must dipatch a non-async function
+			dispatch(saveResult(result))
+		}, 2000)
 	}
 }
 export const deleteResult = (id) => {
