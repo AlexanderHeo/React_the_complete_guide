@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AddPerson from '../components/AddPerson/AddPerson';
 import Person from '../components/Person/Person';
-import * as actionTypes from '../components/store/actions';
+import * as actionTypes from '../store/actions';
 
 class Persons extends Component {
     render () {
@@ -29,7 +29,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		addPerson: () => dispatch({type: actionTypes.ADD_PERSON}),
+		addPerson: (name, age) => dispatch({type: actionTypes.ADD_PERSON, personData: {name: name, age: age}}),
 		deletePerson: (id) => dispatch({type: actionTypes.DELETE_PERSON, id: id}),
 	}
 }
