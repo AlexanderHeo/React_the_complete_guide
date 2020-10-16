@@ -5,9 +5,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { createStore } from 'redux';
 import App from './App';
 import './index.css';
-import reducer from './store/reducer';
+import burgerBuilderReducer from './store/reducers/burgerBuilderReducer';
 
-const store = createStore(reducer);
+const store = createStore(burgerBuilderReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 class ReactApp extends React.Component {
   render() {

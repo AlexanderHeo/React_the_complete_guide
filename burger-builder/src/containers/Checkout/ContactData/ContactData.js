@@ -109,8 +109,6 @@ class ContactData extends Component {
 
   handleOrder = (e) => {
     e.preventDefault();
-    // console.log(this.props.ingredients);
-    //   alert('You made a purchase!');
     this.setState({ loading: true });
     const formData = {};
     for (let formElementIdentifier in this.state.orderForm) {
@@ -137,7 +135,6 @@ class ContactData extends Component {
   };
 
   checkValidity(value, rules) {
-		// console.log('value.length:', value.length)
     let isValid = true;
     if (rules.required) {
       isValid = value.trim() !== "" && isValid;
@@ -161,12 +158,10 @@ class ContactData extends Component {
     );
     updatedFormElement.touched = true;
     updatedOrderForm[inputIdentifier] = updatedFormElement;
-    // console.log("updatedOrderForm:", updatedOrderForm);
     let formIsValid = true;
     for (let inputIdentifier in updatedOrderForm) {
       formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
     }
-    // console.log("formIsValid", formIsValid);
     this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
   };
 
